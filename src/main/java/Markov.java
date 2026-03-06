@@ -1,6 +1,7 @@
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Markov {
@@ -28,15 +29,32 @@ public class Markov {
             }
         } catch (Exception e) {
             System.out.println("Error reading file: " + filename);
+            System.out.println(e.getMessage());
         }
     }
 
     void addWord(String str) {
+        if(endsWithPunctuation(prevWord)) {
+            words.get(BEGINS_SENTENCE).add(str);
+        } else {
+            if (!words.containsKey(prevWord)) {
+                words.put(prevWord, new ArrayList<>());
+            }
+            words.get(prevWord).add(str);
+        }
 
+        prevWord = str;
     }
 
     String randomWord(String str) {
+        ArrayList<String> wordList = words.get(str);
+        if (wordList == null || wordList.isEmpty()) {
+            return null;
+        }
 
+        Random rand = new Random();
+        int i = rand.nextInt(wordList.size());
+        return wordList.get(i);
     }
 
     public String toString() {
@@ -64,6 +82,16 @@ public class Markov {
     }
 
     public static boolean endsWithPunctuation(String str) {
-
+        try {
+            if(str == null || str.isEmpty()) {
+                return false;
+            }
+            char lastCharOfWord = str.charAt(str.length()-1);
+            return PUNCTUATION_MARKS.indexOf(lastCharOfWord) >= 0;
+        } catch (Exception e) {
+            System.out.println("Error checking at word: " + str);
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 }
