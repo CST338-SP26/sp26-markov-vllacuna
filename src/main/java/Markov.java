@@ -21,6 +21,10 @@ public class Markov {
 
         String currentWord = randomWord(BEGINS_SENTENCE);
 
+        if(currentWord == null) {
+            return "";
+        }
+
         while(!endsWithPunctuation(currentWord)) {
             sb.append(currentWord).append(" ");
             currentWord = randomWord(currentWord);
@@ -44,6 +48,10 @@ public class Markov {
     }
 
     void addWord(String str) {
+        if(str == null || str.isEmpty()) {
+            return;
+        }
+
         if(endsWithPunctuation(prevWord)) {
             words.get(BEGINS_SENTENCE).add(str);
         } else {
