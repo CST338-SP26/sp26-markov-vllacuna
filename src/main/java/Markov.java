@@ -17,7 +17,17 @@ public class Markov {
     }
 
     public String getSentence() {
+        StringBuilder sb = new StringBuilder();
 
+        String currentWord = randomWord(BEGINS_SENTENCE);
+
+        while(!endsWithPunctuation(currentWord)) {
+            sb.append(currentWord).append(" ");
+            currentWord = randomWord(currentWord);
+        }
+
+        sb.append(currentWord);
+        return sb.toString();
     }
 
     public void addFromFile(String filename) {
@@ -58,7 +68,7 @@ public class Markov {
     }
 
     public String toString() {
-
+        return words.toString();
     }
 
     HashMap<String, ArrayList<String>> getWords() {
